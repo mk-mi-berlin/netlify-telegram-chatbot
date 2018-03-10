@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run micro-dev",
+    "micro-dev": "micro-dev"
   },
   "author": "Sebastian Boolean",
   "license": "MIT",
   "dependencies": {
-    "koa": "^2.5.0",
-    "koa-bodyparser": "^4.2.0",
+    "micro-dev": "^2.2.0",
     "telegraf": "^3.19.0"
   }
 }

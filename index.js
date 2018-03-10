@@ -1,52 +1,39 @@
 const Telegraf = require('telegraf');
 const Telegram = require('telegraf/telegram');
-const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
+const { json } = require('micro');
+const { parse } = require('url');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const telegram = new Telegram(process.env.BOT_TOKEN);
 
-let chatId = null;
+const chats = {};
 
 bot.start(ctx => {
   console.log('started:', ctx.from.id);
-  return ctx.reply('Welcome!');
+  const chatid = ctx.chat.id;
+  if (chatid in chats) chats[chatid] = chatid;
+  console.log(`${chatid} registered! chats: ${chats}`);
+  return ctx.reply(`Welcome! Your chatId is ${chatid}`);
+});
+bot.hears('register', ctx => {
+  const chatid = ctx.chat.id;
+  if (!(chatid in chats)) chats[chatid] = chatid;
+  console.log(`${chatid} registered! chats: ${chats}`);
+  return ctx.reply(`Welcome! Your chatId is ${chatid}`);
 });
 bot.command('help', ctx => ctx.reply('Try send a sticker!'));
 bot.hears('hi', ctx => ctx.reply('Hey there!'));
-bot.hears('register', ctx => {
-  chatId = ctx.chat.id;
-  console.log(ctx.chat);
-  return ctx.reply('Hey there!');
-});
-bot.hears(/buy/i, ctx => ctx.reply('Buy-buy!'));
-bot.on('sticker', ctx => ctx.reply('👍'));
-bot.startPolling();
 
-const telegram = new Telegram(process.env.BOT_TOKEN);
-
-const app = new Koa();
-
-app.use(bodyParser());
-
-app.use(async (ctx, next) => {
-  console.log(ctx.request);
-  next();
-});
-
-app.use(async ctx => {
-  if (ctx.method === 'POST') {
-    console.log(ctx.request.body);
-    const body = ctx.request.body;
-    if (body) {
-      ctx.status = 201;
-      telegram.sendMessage(chatId, JSON.stringify(body, null, 2));
-    }
-    ctx.status = 201;
-    ctx.body = 'Post request';
-  } else {
-    ctx.body = 'Hello World';
+module.exports = async (req, res) => {
+  console.log('chats:', JSON.stringify(chats));
+  if (req.method === 'POST') {
+    const { query: { chatid } } = parse(req.url, true);
+    if (!chatid) throw new Error(`no chatid`);
+    if (!(chatid in chats)) throw new Error(`chatid ${chatid} not in database`);
+    const body = await json(req);
+    return telegram.sendMessage(chatid, body);
   }
-});
+  return 'This was just a GET request';
+};
 
-app.listen(3000);
-console.log('server startet on port 3000');
+bot.startPolling();
