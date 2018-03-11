@@ -1,0 +1,48 @@
+---
+root: true
+parserOptions:
+  parserOptions:
+    ecmaVersion: 2017
+    sourceType: module
+extends: airbnb-base
+rules:
+  indent: [warn, 2]
+  no-multi-assign: "off"
+  no-restricted-syntax: [error, WithStatement, LabeledStatement]
+  no-param-reassign:
+    - error
+    -
+      props: true
+      ignorePropertyModificationsFor: [req, res]
+  comma-dangle:
+    - error
+    -
+      arrays: always-multiline
+      objects: always-multiline
+      imports: always-multiline
+      exports: always-multiline
+      functions: never
+  no-confusing-arrow: 'off'
+  arrow-parens: [warn, as-needed]
+  operator-linebreak:
+    - warn
+    - before
+    -
+      overrides:
+        '=': after
+        '+=': after
+        '-=': after
+        '*=': after
+        '/=': after
+        '%=': after
+        '**=': after
+        '<<=': after
+        '>>=': after
+        '>>>=': after
+        '&=': after
+        '^=': after
+        '|=': after
+        ',': after
+  no-console:
+    - warn
+    - allow: [trace, error, warn]

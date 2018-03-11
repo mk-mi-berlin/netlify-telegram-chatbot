@@ -24,11 +24,11 @@ bot.hears('register', ctx => {
 bot.command('help', ctx => ctx.reply('Try send a sticker!'));
 bot.hears('hi', ctx => ctx.reply('Hey there!'));
 
-module.exports = async (req, res) => {
+module.exports = async req => {
   console.log('chats:', JSON.stringify(chats));
   if (req.method === 'POST') {
     const { query: { chatid } } = parse(req.url, true);
-    if (!chatid) throw new Error(`no chatid`);
+    if (!chatid) throw new Error('no chatid');
     if (!(chatid in chats)) throw new Error(`chatid ${chatid} not in database`);
     const body = await json(req);
     return telegram.sendMessage(chatid, body);
