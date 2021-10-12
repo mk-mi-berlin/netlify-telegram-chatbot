@@ -2,7 +2,7 @@ const Telegraf = require('telegraf');
 //const startAction = require('./start')
 //const inlineAction = require('./inline')
 const bot = new Telegraf(process.env.BOT_TOKEN);
-console.log("mk1 1");
+console.log("mk1 1: " + process.env.BOT_TOKEN);
 
 bot.start(ctx => {
 return startAction(ctx)
