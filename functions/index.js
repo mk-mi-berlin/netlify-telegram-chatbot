@@ -1,8 +1,9 @@
 const Telegraf = require('telegraf');
-const startAction = require('./start')
-const inlineAction = require('./inline')
+//const startAction = require('./start')
+//const inlineAction = require('./inline')
 const bot = new Telegraf(process.env.BOT_TOKEN);
-
+console.log("mk1 1");
+/*
 bot.start(ctx => {
 return startAction(ctx)
 })
@@ -15,3 +16,4 @@ exports.handler = async event => {
 await bot.handleUpdate(JSON.parse(event.body));
 return { statusCode: 200, body: '' };
 }
+*/
