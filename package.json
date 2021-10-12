@@ -2,7 +2,7 @@
   "name": "netlify-telegram-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "functions/index.js",
   "scripts": {
     "start": "npm run micro-dev",
     "micro-dev": "micro-dev",
